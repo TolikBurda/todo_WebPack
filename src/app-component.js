@@ -4,7 +4,7 @@ import TodoService from './TodoService.js';
 import TodoFormComponent from './TodoFormComponent.js';
 import TodoListComponent from './TodoListComponent.js';
 
-export default class TodoAppComponent extends Component{
+export default class TodoAppComponent extends Component {
     constructor() {
         super();
         this.pubsub = new PubSub();
@@ -12,7 +12,6 @@ export default class TodoAppComponent extends Component{
         this.todoService = new TodoService(this.pubsub);
         this.form = new TodoFormComponent(this.pubsub);
         this.todoList = new TodoListComponent(this.pubsub);
-
         this.title = 'My 2Do';
         document.getElementsByTagName('header')[0].innerHTML = this.title;
 

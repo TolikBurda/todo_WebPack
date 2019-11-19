@@ -4,16 +4,29 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "dev": "webpack --watch"
   },
   "repository": {
-    "type" : "git",
-    "url" : "git+https://github.com/TolikBurda/todo_WebPack.git"
+    "type": "git",
+    "url": "git+https://github.com/TolikBurda/todo_WebPack.git"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^6.6.0",
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.1",
+    "@typescript-eslint/eslint-plugin": "^2.8.0",
+    "@typescript-eslint/parser": "^2.8.0",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^8.0.6",
+    "eslint": "v5.16.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
     "prettier": "1.19.1",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
