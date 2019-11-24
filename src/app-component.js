@@ -3,6 +3,7 @@ import Component from './Component.js';
 import TodoService from './TodoService.js';
 import TodoFormComponent from './TodoFormComponent.js';
 import TodoListComponent from './TodoListComponent.js';
+import ConfirmModal from './ConfirmModal.js';
 
 export default class TodoAppComponent extends Component {
     constructor() {
@@ -12,17 +13,26 @@ export default class TodoAppComponent extends Component {
         this.todoService = new TodoService(this.pubsub);
         this.form = new TodoFormComponent(this.pubsub);
         this.todoList = new TodoListComponent(this.pubsub);
+        this.confirmModal = new ConfirmModal(this.pubsub);
+
+        this.idTodo_ToDelete = null;
+
         this.title = 'My 2Do';
         document.getElementsByTagName('header')[0].innerHTML = this.title;
 
         this.render();
 
         this.pubsub.subscribe('onCreate', this, this.createTodo); //from form
-        this.pubsub.subscribe('delete', this, this.deleteTodo); //from todoItem
+        this.pubsub.subscribe('handleDelete', this, this.handleDelete); //from todoItem
+        this.pubsub.subscribe('delete', this, this.deleteTodo); //from confirmModal
+        this.pubsub.subscribe('cancelDelete', this, this.cancelDelete);//from confirmModal
         this.pubsub.subscribe('toggle', this, this.toggleTodo); //from todoItem
         this.pubsub.subscribe('edit', this, this.editTodo); //from todoItem
     }
+
     render(){
+        this.element.innerHTML = '';
+        this.element.append(this.confirmModal.render());
         this.element.append(this.form.element);
         this.element.append(this.todoList.element);
     }
@@ -32,16 +42,32 @@ export default class TodoAppComponent extends Component {
             this.todoService.createTodo(title);
         }
     }
-    deleteTodo(id) {
-        if(id){
-            this.todoService.deleteTodo(id);
-        }
+
+    handleDelete(id) {
+        this.idTodo_ToDelete = id;
+        this.confirmModal.confirmModalVisible = true;
+        this.render();
     }
+    
+    cancelDelete(){
+        this.idTodo_ToDelete = null;
+        this.confirmModal.confirmModalVisible = false;
+        this.render();
+    }
+
+    deleteTodo() {
+        this.todoService.deleteTodo(this.idTodo_ToDelete);
+        this.idTodo_ToDelete = null;
+        this.confirmModal.confirmModalVisible = false;
+        this.render();
+    }
+
     toggleTodo(id) {
         if(id){
             this.todoService.toggleTodo(id);
         }
     }
+
     editTodo(data){
         if(data){
             this.todoService.editTodo(data.title, data.id);

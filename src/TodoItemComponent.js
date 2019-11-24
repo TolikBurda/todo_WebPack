@@ -9,14 +9,13 @@ export default class TodoItemComponent extends Component {
         this.deleteButton = null;
         this.editButton = null;
         this.controlsContainerDiv = null;
-        this.editDiv = null;
+        this.editDivContainer = null;
         this.saveButton = null;
     }
 
-    handleEvent(title) {
+    handleEvent() {
         this.deleteButton.addEventListener('click', ()=>{
-            confirm(`Вы действительно хотите удалить задачу "${title}"?`);
-            this.pubsub.fireEvent('delete', this.id);
+            this.pubsub.fireEvent('handleDelete', this.id);
         })
 
         this.checkBoxButton.addEventListener('click', ()=>{
@@ -25,7 +24,7 @@ export default class TodoItemComponent extends Component {
 
         this.editButton.addEventListener('click', ()=>{
             this.controlsContainerDiv.style.display = 'none';
-            this.editDiv.style.display = '';
+            this.editDivContainer.style.display = '';
         })
 
         this.saveButton.addEventListener('click', ()=>{
@@ -90,10 +89,10 @@ export default class TodoItemComponent extends Component {
         ////////////////////////////editDiv
         let arrOfEditElements = [];//arrOf
 
-        let todoEditDiv = document.createElement('div');//editDivContiner
-        todoEditDiv.className = 'todo-item';
-        todoEditDiv.style.display = 'none';
-        this.editDiv = todoEditDiv;
+        let editDivContainer = document.createElement('div');//editDivContainer
+        editDivContainer.className = 'todo-item';
+        editDivContainer.style.display = 'none';
+        this.editDivContainer = editDivContainer;
     
         let textField = document.createElement('input');
         textField.type = 'text';
@@ -117,15 +116,15 @@ export default class TodoItemComponent extends Component {
         arrOfEditElements.push(actionsEditDiv);
 
         for(let n = 0; n < arrOfEditElements.length; n++){
-            todoEditDiv.append(arrOfEditElements[n]);
+            editDivContainer.append(arrOfEditElements[n]);
         }
 
 
-        section.append(todoEditDiv);
+        section.append(editDivContainer);
         section.append(this.controlsContainerDiv);
 
 
         this.element = section; 
-        this.handleEvent(title);
+        this.handleEvent();
     }
 }
